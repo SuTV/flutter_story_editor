@@ -20,6 +20,7 @@ class CaptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print("captionController $captionController");
     // Building the widget structure for the caption view.
     return Column(
       children: [
@@ -65,6 +66,7 @@ class CaptionView extends StatelessWidget {
                       width: 5,
                     ),
                     Text("Status (Contacts)", style: TextStyle(color: Colors.white),) // Text indicating the status.
+                    // Text("Send to Contacts", style: TextStyle(color: Colors.white),) // Text indicating the status.
                   ],
                 ),
               ),
