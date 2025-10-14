@@ -10,12 +10,13 @@ homepage: https://github.com/AdnanKhan45/flutter_story_editor/blob/main/lib/flut
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
-  flutter: ">=1.17.0"
+  # flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  image_cropper: ^5.0.1
+
+  image_cropper: ^8.0.0
   video_player: ^2.8.6
   video_trimmer: ^3.0.1
   video_thumbnail: ^0.5.3
@@ -41,6 +42,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  uses-material-design: true
   # To add assets to your package, add an assets section, like this:
   assets:
     - assets/images/
@@ -91,6 +93,9 @@ flutter:
     - family: Pacifico
       fonts:
         - asset: assets/fonts/pacifico/Pacifico-Regular.ttf
+
+  generate: true
+
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages

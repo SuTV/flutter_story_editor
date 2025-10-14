@@ -7,6 +7,7 @@ import 'package:flutter_story_editor/src/theme/style.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:flutter/services.dart';
 
 /// Generates a thumbnail from a video file.
 ///
@@ -28,6 +29,17 @@ Future<Uint8List?> generateThumbnail(File? file) async {
   }
 
   return thumbnail;
+}
+
+
+
+Future<void> loadAsset(String path) async {
+  try {
+    final data = await rootBundle.load(path);
+    print("Asset loaded successfully: $path");
+  } catch (e) {
+    print("Failed to load asset: $path, error: $e");
+  }
 }
 
 /// Converts a widget to an image file using its GlobalKey.
@@ -80,9 +92,9 @@ Future<List<File>?> convertWidgetsToImages(List<GlobalKey> keys) async {
 Future<CroppedFile?> cropImage(BuildContext context, {required File file}) async {
   CroppedFile? croppedFile = await ImageCropper.platform.cropImage(
       sourcePath: file.path,
-      aspectRatioPresets: Platform.isAndroid
-          ? [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio3x2, CropAspectRatioPreset.original, CropAspectRatioPreset.ratio4x3, CropAspectRatioPreset.ratio16x9]
-          : [CropAspectRatioPreset.original, CropAspectRatioPreset.square, CropAspectRatioPreset.ratio3x2, CropAspectRatioPreset.ratio4x3, CropAspectRatioPreset.ratio5x3, CropAspectRatioPreset.ratio5x4, CropAspectRatioPreset.ratio7x5, CropAspectRatioPreset.ratio16x9],
+      // aspectRatioPresets: Platform.isAndroid
+          // ? [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio3x2, CropAspectRatioPreset.original, CropAspectRatioPreset.ratio4x3, CropAspectRatioPreset.ratio16x9]
+          // : [CropAspectRatioPreset.original, CropAspectRatioPreset.square, CropAspectRatioPreset.ratio3x2, CropAspectRatioPreset.ratio4x3, CropAspectRatioPreset.ratio5x3, CropAspectRatioPreset.ratio5x4, CropAspectRatioPreset.ratio7x5, CropAspectRatioPreset.ratio16x9],
       uiSettings: [
         AndroidUiSettings(toolbarTitle: 'Crop Image', toolbarColor: darkGreenColor, toolbarWidgetColor: Colors.white, activeControlsWidgetColor: tealColor, initAspectRatio: CropAspectRatioPreset.original, lockAspectRatio: false),
         IOSUiSettings(title: 'Crop Image'),

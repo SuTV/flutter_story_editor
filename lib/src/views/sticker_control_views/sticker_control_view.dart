@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_story_editor/src/const/const.dart';
 import 'package:flutter_story_editor/src/controller/controller.dart';
+import 'package:flutter_story_editor/src/utils/utils.dart';
 
 import 'sticker_top_view.dart';
 
@@ -103,15 +104,30 @@ class _StickerControlViewState extends State<StickerControlView> {
                   physics: const ScrollPhysics(),
                   itemCount: Consts.stickers.length,
                   itemBuilder: (context, index) {
-                    final String sticker = Consts.stickers[index];
+                      final String sticker = Consts.stickers[index];
+                      // print("Loading sticker: assets/images/$sticker");
 
-                    return GestureDetector(
-                      onTap: () {
-                        widget.onStickerClickListener("assets/images/$sticker");
-                      },
-                      child: Image.asset("assets/images/$sticker"),
-                    );
-                  },
+                      return GestureDetector(
+                        onTap: () {
+                          widget.onStickerClickListener("assets/images/$sticker");
+                        },
+                        child: FutureBuilder(
+                          future:  loadAsset("assets/images/$sticker"), // 异步加载资源
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              // 加载中显示占位符
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              // 加载失败显示错误提示
+                              return const Icon(Icons.error);
+                            } else {
+                              // 加载成功显示图片
+                              return Image.asset("assets/images/$sticker", width: 28);
+                            }
+                          },
+                        ),
+                      );
+                    },
                 ),
               )
               else
@@ -123,12 +139,26 @@ class _StickerControlViewState extends State<StickerControlView> {
                     itemCount: Consts.emojies.length,
                     itemBuilder: (context, index) {
                       final String emoji = Consts.emojies[index];
-
+                      // print("Loading emoji: assets/emojies/$emoji");
                       return GestureDetector(
                         onTap: () {
                           widget.onStickerClickListener("assets/emojies/$emoji");
                         },
-                        child: Image.asset("assets/emojies/$emoji"),
+                        child: FutureBuilder(
+                          future:  loadAsset("assets/emojies/$emoji"), // 异步加载资源
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              // 加载中显示占位符
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              // 加载失败显示错误提示
+                              return const Icon(Icons.error);
+                            } else {
+                              // 加载成功显示图片
+                              return Image.asset("assets/emojies/$emoji", width: 28);
+                            }
+                          },
+                        ),
                       );
                     },
                   ),
