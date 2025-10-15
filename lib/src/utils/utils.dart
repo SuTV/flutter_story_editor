@@ -17,21 +17,33 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// [file] - The video file from which to generate the thumbnail.
 ///
 /// Returns a [Uint8List] containing the thumbnail data, or null if the file is not a video or is null.
-Future<Uint8List?> generateThumbnail(File? file) async {
-  if (file == null) return null;
-
-  Uint8List? thumbnail;
-  // Supports mp4, mov, avi formats.
-  if (file.path.endsWith('.mp4') || file.path.endsWith('.mov') || file.path.endsWith('.avi')) {
-    thumbnail = await VideoThumbnail.thumbnailData(
-      video: file.path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 128, // Width of the thumbnail.
-      quality: 15, // Quality of the thumbnail.
-    );
+Future<Uint8List?> generateThumbnail(String videoPath) async {
+  if (videoPath.isEmpty) {
+    throw Exception("视频路径为空");
   }
 
-  return thumbnail;
+  final file = File(videoPath);
+  if (!file.existsSync()) {
+    throw Exception("视频文件不存在: $videoPath");
+  }
+
+  try {
+    final thumbnail = await VideoThumbnail.thumbnailData(
+      video: videoPath,
+      imageFormat: ImageFormat.JPEG,
+      maxHeight: 200, // 指定缩略图高度
+      quality: 75,    // 指定缩略图质量
+    );
+
+    if (thumbnail == null) {
+      throw Exception("无法生成视频缩略图");
+    }
+
+    return thumbnail;
+  } catch (e) {
+    print("生成缩略图时发生错误: $e");
+    return null;
+  }
 }
 
 Image imageOnPackName(String path, {double? width}) {

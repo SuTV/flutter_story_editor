@@ -79,9 +79,9 @@ class _MainControlsViewState extends State<MainControlsView> {
 
   // Function to generate thumbnails for video files asynchronously.
   void generateVideoFilesThumbnails() async {
-    for (var file in widget.selectedFiles ?? []) {
-      if (isVideo(file)) {
-        var generatedThumbnail = await generateThumbnail(file);
+    for (File? file in widget.selectedFiles ?? []) {
+      if (file != null && isVideo(file)) {
+        var generatedThumbnail = await generateThumbnail(file.path);
         if (mounted) {
           setState(() {
             _thumbnails[file] = generatedThumbnail;

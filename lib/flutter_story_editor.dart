@@ -172,7 +172,7 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
                                       lines: widget.controller.uiEditableFileLines[storyIndex],
                                       trimOnAdjust: widget.trimVideoOnAdjust,
                                       onTrimCompleted: (file) async {
-                                        await generateThumbnail(file)
+                                        await generateThumbnail(file.path)
                                             .then((generatedThumbnail) {
                                           setState(() {
                                             _thumbnails[file] = generatedThumbnail;
@@ -220,7 +220,7 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
                               onDoneClickListener: () async {
                                 widget.controller.setStoryEditingModeSelected = StoryEditingModes.none;
 
-                                await generateThumbnail(uiViewEditableFiles![currentPageIndex]).then((generatedThumbnail) {
+                                await generateThumbnail(uiViewEditableFiles![currentPageIndex].path).then((generatedThumbnail) {
                                   setState(() {
                                     _thumbnails[uiViewEditableFiles![currentPageIndex]] = generatedThumbnail;
                                   });
