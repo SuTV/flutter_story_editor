@@ -10,7 +10,7 @@ class StickerControlView extends StatefulWidget {
   final FlutterStoryEditorController controller;
   final Function(String) onStickerClickListener;
   const StickerControlView({super.key, required this.controller, required this.onStickerClickListener});
-
+  
   @override
   State<StickerControlView> createState() => _StickerControlViewState();
 }
@@ -18,8 +18,10 @@ class StickerControlView extends StatefulWidget {
 class _StickerControlViewState extends State<StickerControlView> {
 
   bool isEmoji = false;
+
   @override
   Widget build(BuildContext context) {
+    
     return Stack(
       children: [
         BackdropFilter(
@@ -105,14 +107,14 @@ class _StickerControlViewState extends State<StickerControlView> {
                   itemCount: Consts.stickers.length,
                   itemBuilder: (context, index) {
                       final String sticker = Consts.stickers[index];
+                      String path = "assets/images/$sticker";
                       // print("Loading sticker: assets/images/$sticker");
-
                       return GestureDetector(
                         onTap: () {
-                          widget.onStickerClickListener("assets/images/$sticker");
+                          widget.onStickerClickListener(path);
                         },
                         child: FutureBuilder(
-                          future:  loadAsset("assets/images/$sticker"), // 异步加载资源
+                          future:  loadAsset(path), // 异步加载资源
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               // 加载中显示占位符
@@ -122,7 +124,9 @@ class _StickerControlViewState extends State<StickerControlView> {
                               return const Icon(Icons.error);
                             } else {
                               // 加载成功显示图片
-                              return Image.asset("assets/images/$sticker", width: 28);
+                              // return Image(image: AssetImage(path, package: FlutterStoryEditor.assetPackageName ), width: 28);
+                              // return Image.asset(path, width: 28);
+                              return imageOnPackName(path);
                             }
                           },
                         ),
@@ -139,13 +143,14 @@ class _StickerControlViewState extends State<StickerControlView> {
                     itemCount: Consts.emojies.length,
                     itemBuilder: (context, index) {
                       final String emoji = Consts.emojies[index];
+                      String path = "assets/emojies/$emoji";
                       // print("Loading emoji: assets/emojies/$emoji");
                       return GestureDetector(
                         onTap: () {
-                          widget.onStickerClickListener("assets/emojies/$emoji");
+                          widget.onStickerClickListener(path);
                         },
                         child: FutureBuilder(
-                          future:  loadAsset("assets/emojies/$emoji"), // 异步加载资源
+                          future:  loadAsset(path), // 异步加载资源
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               // 加载中显示占位符
@@ -155,7 +160,7 @@ class _StickerControlViewState extends State<StickerControlView> {
                               return const Icon(Icons.error);
                             } else {
                               // 加载成功显示图片
-                              return Image.asset("assets/emojies/$emoji", width: 28);
+                              return imageOnPackName(path);
                             }
                           },
                         ),

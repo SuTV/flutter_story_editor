@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_story_editor/src/controller/controller.dart';
 import 'package:flutter_story_editor/src/utils/utils.dart';
+import 'package:flutter_story_editor/src/const/const.dart';
+import 'package:path/path.dart';
 
 import 'src/const/filters.dart';
 import 'src/enums/story_editing_modes.dart';
@@ -19,7 +21,6 @@ import 'src/views/sticker_control_views/sticker_control_view.dart';
 import 'src/widgets/draggable_sticker_widget.dart';
 import 'src/widgets/draggable_text_widget.dart';
 
-
 class FlutterStoryEditor extends StatefulWidget {
   final List<File>? selectedFiles; // Holds the files selected for editing.
   final Function(List<File>)? onSaveClickListener; // Callback when save action is triggered.
@@ -31,6 +32,13 @@ class FlutterStoryEditor extends StatefulWidget {
 
   @override
   State<FlutterStoryEditor> createState() => _FlutterStoryEditorState();
+
+  static String? assetPackageName;
+
+  static initStoryEditor() async {
+    String currentPackageName = await getPackageName();
+    assetPackageName = Consts.selfPackageName == currentPackageName ? "" : Consts.selfPackageName;
+  }
 }
 
 class _FlutterStoryEditorState extends State<FlutterStoryEditor> {

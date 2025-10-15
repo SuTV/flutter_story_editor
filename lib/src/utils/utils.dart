@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_story_editor/flutter_story_editor.dart';
 import 'package:flutter_story_editor/src/theme/style.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// Generates a thumbnail from a video file.
 ///
@@ -31,15 +33,28 @@ Future<Uint8List?> generateThumbnail(File? file) async {
   return thumbnail;
 }
 
-
+Image imageOnPackName(String path, {double? width}) {
+  String? packageName = FlutterStoryEditor.assetPackageName;
+  return Image(image: AssetImage(path, package: packageName ), width: width);
+}
 
 Future<void> loadAsset(String path) async {
   try {
-    final data = await rootBundle.load(path);
-    print("Asset loaded successfully: $path");
+    // final data = await rootBundle.load(path);
+    print("!Asset loaded successfully: $path");
+    String? packageName = FlutterStoryEditor.assetPackageName;
+    final data = AssetImage(path, package: packageName);
+    
   } catch (e) {
     print("Failed to load asset: $path, error: $e");
   }
+}
+
+Future<String> getPackageName() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String packageName = packageInfo.packageName;
+  print('current package name: $packageName');
+  return packageName;
 }
 
 /// Converts a widget to an image file using its GlobalKey.

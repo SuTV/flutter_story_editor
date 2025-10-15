@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_story_editor/src/controller/controller.dart';
+import 'package:flutter_story_editor/src/utils/utils.dart';
 import 'src/views/sticker_control_views/sticker_control_view.dart';
 
-void main() {
+
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const MyApp());
 }
 
