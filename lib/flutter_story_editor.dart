@@ -168,24 +168,54 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
                                   int storyIndex = uiViewEditableFiles!.indexOf(singleStory);
                                   // if the selected file was video show [TrimmerView]
                                   if (isVideo(singleStory)) {
-                                    return TrimmerView(
-                                      lines: widget.controller.uiEditableFileLines[storyIndex],
-                                      trimOnAdjust: widget.trimVideoOnAdjust,
-                                      onTrimCompleted: (file) async {
-                                        await generateThumbnail(file.path)
-                                            .then((generatedThumbnail) {
-                                          setState(() {
-                                            _thumbnails[file] = generatedThumbnail;
-                                          });
-                                        });
-                                        setState(() {
-                                          widget.selectedFiles![storyIndex] = file;
-                                        });
-                                      },
-                                      key: ValueKey(singleStory.path),
-                                      file: singleStory,
-                                      pageController: _pageController,
-                                      pageIndex: storyIndex,
+                                    return Stack(
+                                      children: [
+                                        TrimmerView(
+                                          lines: widget.controller.uiEditableFileLines[storyIndex],
+                                          trimOnAdjust: widget.trimVideoOnAdjust,
+                                          onTrimCompleted: (file) async {
+                                            await generateThumbnail(file.path)
+                                                .then((generatedThumbnail) {
+                                              setState(() {
+                                                _thumbnails[file] = generatedThumbnail;
+                                              });
+                                            });
+                                            setState(() {
+                                              widget.selectedFiles![storyIndex] = file;
+                                            });
+                                          },
+                                          key: ValueKey(singleStory.path),
+                                          file: singleStory,
+                                          pageController: _pageController,
+                                          pageIndex: storyIndex,
+                                        ),
+                                        if(widget.controller.editingModeSelected == StoryEditingModes.none) 
+                                          Positioned(
+                                            top: 23,
+                                            left: 20,
+                                            child: Container(
+                                              width: 32,
+                                              height: 32,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent, // 背景透明
+                                                shape: BoxShape.circle, // 圆形边框
+                                                border: Border.all(
+                                                  color: Colors.white, // 边框颜色为白色
+                                                  width: 1.0, // 边框宽度
+                                                ),
+                                              ),
+                                              child: IconButton(
+                                                icon: const Icon(Icons.close_sharp, color: Colors.white),
+                                                padding: EdgeInsets.zero,
+                                                onPressed: () {
+                                                  print("按钮被点击了 Controller: ${widget.controller}");
+                                                  // 关闭按钮的逻辑，例如返回上一页或退出编辑模式
+                                                  widget.controller.setStoryEditingModeSelected = StoryEditingModes.none;
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     );
                                   } else {
                                     // if the selected file was image show [ImageView]
