@@ -176,7 +176,8 @@ class _MainControlsViewState extends State<MainControlsView> {
     return AnimatedPadding(
       duration: const Duration(milliseconds: 200),
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 30,
+        right: 20,
       ),
       child: Column(
         children: [
@@ -221,7 +222,7 @@ class _MainControlsViewState extends State<MainControlsView> {
                 CaptionView(
                   focusNode: widget.captionFocusNode,
                   isSaving: widget.isSaving,
-                  captionController: widget.captionController!,
+                  captionController: widget.captionController,
                   onSaveClickListener: widget.onSaveClickListener!,
                 )
             ],

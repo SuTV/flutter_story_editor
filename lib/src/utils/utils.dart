@@ -18,6 +18,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 ///
 /// Returns a [Uint8List] containing the thumbnail data, or null if the file is not a video or is null.
 Future<Uint8List?> generateThumbnail(String videoPath) async {
+  print(
+    "generateThumbnail videoPath: $videoPath",
+  );
   if (videoPath.isEmpty) {
     throw Exception("视频路径为空");
   }
@@ -32,11 +35,21 @@ Future<Uint8List?> generateThumbnail(String videoPath) async {
       video: videoPath,
       imageFormat: ImageFormat.JPEG,
       maxHeight: 200, // 指定缩略图高度
-      quality: 75,    // 指定缩略图质量
+      quality: 30,    // 指定缩略图质量
     );
 
     if (thumbnail == null) {
-      throw Exception("无法生成视频缩略图");
+      final thumbnail = await VideoThumbnail.thumbnailData(
+        video: videoPath,
+        imageFormat: ImageFormat.JPEG,
+        maxHeight: 200, 
+        quality: 30,  
+        timeMs: 2,  
+      );
+
+      if (thumbnail == null) {
+        throw Exception("无法生成视频缩略图");
+      }
     }
 
     return thumbnail;

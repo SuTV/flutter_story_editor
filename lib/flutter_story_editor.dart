@@ -53,7 +53,7 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
   void dispose() {
     /// Cleans up resources and controllers on widget disposal.
     drawingUndoController.close();
-    widget.controller.setStoryEditingModeSelected = StoryEditingModes.paint;
+    widget.controller.setStoryEditingModeSelected = StoryEditingModes.none;
     keyboardSubscription.cancel();
     super.dispose();
   }
@@ -191,8 +191,8 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
                                         ),
                                         if(widget.controller.editingModeSelected == StoryEditingModes.none) 
                                           Positioned(
-                                            top: 23,
-                                            left: 20,
+                                            top: 36,
+                                            left: 22,
                                             child: Container(
                                               width: 32,
                                               height: 32,
@@ -210,7 +210,7 @@ class _FlutterStoryEditorState extends State<FlutterStoryEditor> {
                                                 onPressed: () {
                                                   print("按钮被点击了 Controller: ${widget.controller}");
                                                   // 关闭按钮的逻辑，例如返回上一页或退出编辑模式
-                                                  widget.controller.setStoryEditingModeSelected = StoryEditingModes.none;
+                                                  Navigator.of(context).pop();
                                                 },
                                               ),
                                             ),
